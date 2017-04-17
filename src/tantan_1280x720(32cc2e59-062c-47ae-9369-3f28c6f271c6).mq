@@ -1,0 +1,200 @@
+Dim i, intX, intY, sw= 4, LX = 0, LY = 0, up
+Dim delaytime = 400
+Dim dict,str
+Dim StrA = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ" '这里指定字符集
+Dim zannumber = 6, friends = 3, wordtext = "hi, 美女 你好呀|最近你在干什么呀？|最近过的怎么样?"
+Dim dongtaiword = "你好帅啊|能不能加个微信聊一下"
+
+//zannumber = CInt(ReadUIConfig("times", 10))
+//friends = CInt(ReadUIConfig("haoyoutimes", 10))
+//wordtext = ReadUIConfig("huifuhaoyou", "hi, 你好")
+//dongtaiword = ReadUIConfig("dongtaiword", "hi, 你好")
+
+
+Function main()
+
+//	ShowMessage "加好友开始"
+//	huadong 
+//	
+//	chat
+//	
+//	ShowMessage "发动态开始"
+//	fadongtai 
+	
+//	ShowMessage "评论开始"
+//	pinglun 
+	ShowMessage "回复消息开始"
+	Tap 31,84
+	huifuxiaoxi()
+	
+	
+End Function
+
+Function chat()
+	//点击聊天按钮
+	Delay 100
+	Tap 680, 78
+	pengyouquan
+	Delay delaytime
+End Function
+
+Function huadong()
+	Do
+//		Swipe  708,461, 917,461
+		Tap 445,1172
+		i = i + 1
+		Delay delaytime
+		If i > friends Then 
+			Exit Do
+		End If
+	Loop
+End Function
+
+Function pengyouquan()
+	Delay delaytime
+	Tap 206,157
+	Delay delaytime
+End Function
+
+Function dianzan()
+	Delay delaytime
+	FindPic 0,0, 0, 0, "Attachment:dianzan.png|Attachment:dianzan2.png","3D3D3D", 2, 0.8, intX, intY
+	
+	If intX > -1 And intY > -1 Then 
+		TracePrint "find"
+		Tap intX, intY
+		Delay delaytime
+	Else 
+		TracePrint "no find"
+	End If
+End Function
+
+
+//说话
+Function pinglun()
+	Delay delaytime
+	Do Until zannumber = 0
+		FindPic 75,255, 313,664, "Attachment:pinglun.png|Attachment:pinglun2.png|Attachment:pinglun3.png|Attachment:pinglun4.png", "3D3D3D", 2, 1, intX, intY
+		If intX > -1 And intY > -1 Then
+			Tap intX, intY
+			Delay delaytime
+			InputText MakeStr(4) & randomword(wordtext)
+			Delay delaytime
+			sendmessage 
+			zannumber = zannumber -1
+		Else 
+			TracePrint "滑动"
+		End If
+		dianzan 
+		Delay delaytime
+	
+		Swipe 313,664, 313,381
+		Delay delaytime
+	Loop
+	//点击返回
+	Tap 37, 92
+	
+End Function
+
+
+Function huifuxiaoxi()
+	Dim endcolor = GetPixelColor(136,1243), people, str, Ypois 
+	Do
+		people = 10
+		Ypois = 314
+		Do Until people = 0
+			Tap 510, Ypois
+			Ypois = Ypois + 100
+			Delay delaytime
+			str = MakeStr(4) & randomword(dongtaiword)
+			Tap 232, 1242
+			Delay delaytime
+			InputText str
+			Delay delaytime
+			sendmessage
+			//点击返回
+			Tap 37, 92
+			Delay delaytime
+			people = people -1
+		Loop
+		Swipe 509, 1274, 398, 279
+		Delay delaytime
+		If GetPixelColor(136, 1243) = endcolor Then 
+			TracePrint "已经到了结尾"
+			huifuxiaoxi = 1
+		End If
+		
+	Loop
+End Function
+
+
+Function sendmessage()
+	FindPic 0, 0, 0,0, "Attachment:fasong.png|Attachment:fasong2.png|Attachment:fasong3.png|Attachment:fasong4.png|Attachment:fasong5.png","3D3D3D", 2, 0.8, intX, intY
+
+	If intX > -1 And intY > -1 Then 
+		TracePrint "find"
+		Tap intX, intY
+		Delay delaytime
+		sendmessage = True
+	Else 
+		sendmessage = False
+	End If
+End Function
+
+Function randomword(word)
+
+	Dim  array1, lens, MyValue
+	If InStr(1, word, "|") <> 0 Then 
+		array1 = Split(word, "|")
+		lens = UBOUND(array1) 
+		MyValue = GetRandomMath(0, lens)
+	Else 
+		randomword = word
+	End If
+	
+	
+	randomword = array1(MyValue)
+End Function
+
+Function GetRandomMath(m, n)
+  Randomize
+  GetRandomMath = Int(((n-m+1) * Rnd()) + m)
+End Function
+
+Function MakeStr (L)
+    Dim i, randomstr
+    randomstr = ""
+    For i = 0 To L
+        Randomize
+       randomstr = randomstr & Mid(StrA, Int(Rnd() * Len(StrA)) + 1, 1)
+    Next
+    MakeStr = randomstr
+End Function
+
+Function fadongtai()
+	FindPic 0, 0, 0,0, "Attachment:xiangce.png","3D3D3D", 2, 0.8, intX, intY
+	If intX > -1 And intY > -1 Then 
+		TracePrint "find"
+		Tap intX, intY
+		Delay delaytime
+		Tap 314, 158
+		Delay delaytime
+		sendmessage 
+		Delay delaytime
+		str = MakeStr(4) & randomword(wordtext)
+		InputText str
+		sendmessage 
+		Delay delaytime
+		fadongtai = 1
+	Else 
+		fadongtai = 0
+	End If
+	
+End Function
+
+//main
+
+Function debug()
+	huifuxiaoxi
+End Function
+debug

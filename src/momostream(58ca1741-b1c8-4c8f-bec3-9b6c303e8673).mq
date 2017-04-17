@@ -1,0 +1,295 @@
+Dim intX, intY, dtX=900, dtY=1000, delaytime = 300, longtime = 1000, waitnumber = 4
+Dim xiaoxihongdianX =570, xiaoxihongdianY = 1837
+Dim zhaohuX1 = 0, zhaohuY1 = 1271, zhaohuX2 = 361, zhaohuY2 = 1753
+Dim talkhongdianX1 = 0, talkhongdianY1 = 50, talkhongdianX2 = 1074,talkhongdianY2 = 1817
+Dim fanhuiX = 47, fanhuiY = 113
+Dim tupianX = 467, tupianY=  280
+Dim fasongdongtaiX = 1038, fasongdongtaiY = 113
+Dim hongdian = "5A5AFF"
+Dim dongtainumber = 5
+Dim guanggao = "你是哪里人啊？", dongtaiword = "a, 第一次玩这个，怎么玩啊？"
+Dim fujinX = 106, fujinY= 1821, dtxuanX = 524, dtxuanY = 189, dtfanhuiX = 49, dtfanhuiY = 118 
+Dim pinglunX = 986, pinglunY = 1863
+Dim xiaoxiX = 90,xiaoxiY = 1530
+Dim ruanpinglunX =  200,ruanpinglunY = 1300, tmpY
+Dim StrA, i, randomstr
+StrA = "1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ" '这里指定字符集
+
+Dim pinglunword = "你在哪？|你在干嘛？|你是做什么的呢？"
+Dim pingluntimes = 8, fujinnumber = 10
+Dim fujinderenword = "你好，你在北京吗？|你好，你在做什么|你好你多大了？"
+
+
+
+Function main()
+
+End Function
+
+Function jinrufujinderen()
+	//点击任务栏附近按钮
+    Tap fujinX, fujinY
+    TracePrint "点击任务栏附近按钮"
+    //	
+    Delay delaytime
+    Tap 331, 183
+    
+    Do Until fujinnumber = 0
+    		Tap 694, 363
+    		Delay delaytime
+    		Tap 27, 1854
+    		Delay delaytime
+    		InputText MakeStr(4) & randomword(fujinderenword)
+    		Delay longtime
+    		
+    		pinglunanniu 
+    		Delay delaytime
+    		wucaozuo 
+    		
+    Loop
+End Function
+
+Function jinrudongtai()
+    //点击任务栏附近按钮
+    Tap fujinX, fujinY
+    TracePrint "点击任务栏附近按钮"
+    //	
+    Delay delaytime
+    //	//点击上方动态选项卡
+    Tap dtxuanX, dtxuanY
+    TracePrint "点击上方动态选项卡"
+	
+End Function
+
+Function fadongtai()
+    jinrudongtai 
+	
+    //点击发动态的+号
+    FindPic 427,82, 1073,390, "Attachment:dongtai.png", "2D2D2D", 2, 0.8, intX, intY
+    If intX > -1 And intY > -1 Then 
+        TracePrint "找到发送按钮,提交"
+        Tap intX, intY
+        Delay delaytime
+    Else 
+        TracePrint "出错"
+        EndScript
+    End If
+	
+    Delay longtime
+    //点击图片动态
+    TracePrint "点击图片动态"
+    Tap 893,556
+	
+    Delay longtime
+	
+    //选中第一张图片
+    Tap tupianX, tupianY
+    Delay delaytime
+	
+    pinglunanniu 
+	
+    Delay delaytime
+	
+    InputText dongtaiword
+    Delay delaytime
+	
+    //取消微信
+    FindPic 0,0, 0,0, "Attachment:weixin.png", "2D2D2D", 2, 0.8, intX, intY
+    If intX > -1 And intY > -1 Then 
+        TracePrint "取消发送到微信,提交"
+        Tap intX, intY
+        Delay delaytime
+    End If
+	
+    Tap fasongdongtaiX, fasongdongtaiY
+    Delay delaytime
+	
+End Function
+
+
+Function dianzan()
+    FindPic 0, 400, ruanpinglunX, ruanpinglunY, "Attachment:dianzan.png", "2D2D2D", 2, 0.9, intX, intY
+    If intX > -1 And intY > -1 Then 
+        TracePrint "dianzan "&intX&" "&intY
+        Tap intX, intY
+        ShowMessage "点赞"
+    End If
+End Function
+
+Function fujinderen()
+	
+End Function
+
+Function talk()
+    //查找红点位置
+    Do
+        Delay delaytime
+        FindColor talkhongdianX1, talkhongdianY1, talkhongdianX2, talkhongdianY2, "5A5AFF", 2, 1, intX, intY
+        If intX > -1 And intY > -1 Then
+            TracePrint "找到红点",intX,intY
+            Delay delaytime
+            Tap intX, intY
+            Tap intX, intY
+            Delay delaytime
+            faxiaoxi
+        Else 
+            Exit Do
+        End If
+    Loop
+	
+End Function
+
+Function huifupinglun()
+//	jinrudongtai 
+	
+	Do Until pingluntimes = 0
+//		FindPic zhaohuX1,zhaohuY1, zhaohuX2,zhaohuY2, "Attachment:pinglun.png|Attachment:pinglun2.png", "2D2D2D", 2, 0.9, intX, intY
+		FindPic 0, 0, 0, 0, "Attachment:pinglun.png|Attachment:pinglun2.png", "2D2D2D", 2, 0.9, intX, intY
+    		If intX > -1 And intY > -1 Then
+        		TracePrint "找到消息",intX,intY
+        		Tap intX, intY
+        		Delay delaytime
+        		
+        		InputText MakeStr(4) & randomword(pinglunword)
+        		Delay delaytime
+    			pinglunanniu 
+        		Delay longtime
+    		Else 
+        		TracePrint "出错，没有消息"
+    		End If
+		Delay delaytime
+    		//	dianzan()
+    		Swipe zhaohuX2 , zhaohuY2 , zhaohuX2 , (zhaohuY2 - 300)
+    		wucaozuo()
+		pingluntimes = pingluntimes - 1
+	Loop
+	
+End Function
+
+Function dazhaohu()
+	
+    //来消息了
+    FindPic 2,1771, 1051,1905, "Attachment:xiaoxi.png|Attachment:xiaoxi2.png", "2D2D2D", 2, 0.8, intX, intY
+    If intX > -1 And intY > -1 Then
+        TracePrint "找到消息",intX,intY
+        Delay delaytime
+        Tap intX, intY
+    Else 
+        TracePrint "出错，没有消息"
+        dazhaohu = 1
+    End If
+	
+    Delay delaytime
+
+	
+    //HI有可能不在第一个页面，需要自动查找
+		
+    Dim tempcolor = GetPixelColor(xiaoxiX, xiaoxiY)
+    Do
+        //查找Hi 位置
+        FindPic 0, 0, 0, 0, "Attachment:hi.png", "2D2D2D", 2, 0.8, intX, intY
+        If intX > -1 And intY > -1 Then
+            TracePrint "找到HI",intX,intY
+            Exit Do
+        End If
+        Swipe  102, 1528, 102, 1075
+        TracePrint GetPixelColor(xiaoxiX, xiaoxiY)
+        TracePrint tempcolor
+        If GetPixelColor(xiaoxiX, xiaoxiY) = tempcolor Then 
+            TracePrint "已经到了结尾"
+            EndScript
+        End If
+        tempcolor = GetPixelColor(xiaoxiX, xiaoxiY)
+        TracePrint "继续 "
+    Loop	
+
+    //查找HI位置
+    Tap intX, intY
+	
+    Dim number = 4
+    Do Until number = 0
+
+        Delay delaytime
+        FindPic 0, 0, 0, 0, "Attachment:nanxing.png", "2D2D2D", 2, 0.8, intX, intY
+        If intX > -1 And intY > -1 Then
+            TracePrint "找到男性",intX,intY
+            Delay delaytime
+            Tap intX, intY
+        Else 
+            ShowMessage "男性消息回复完"
+            Exit Do
+        End If
+
+		 
+        Delay delaytime
+
+        faxiaoxi
+        number = number -1
+    Loop
+	
+End Function
+
+Function faxiaoxi()
+    randomstr = MakeStr(4)  & guanggao
+    InputText randomstr
+    Delay delaytime
+	
+    //点击发送按钮
+    pinglunanniu 
+    Tap fanhuiX, fanhuiY
+    Delay delaytime
+End Function
+
+Function wucaozuo()
+	Do
+   		FindPic 0,75, 188,242, "Attachment:wucaozuo.png", "2D2D2D", 2, 0.8, intX, intY
+    		If intX > -1 And intY > -1 Then 
+        		TracePrint "误操作 ,返回"
+        		Tap intX, intY
+        		Delay delaytime
+        	Else 
+        		Exit Do
+    		End If
+    	Loop
+End Function
+
+Function pinglunanniu()
+    FindPic 0, 0, 0, 0, "Attachment:fasong.png|Attachment:fabu.png|Attachment:wancheng.png|Attachment:pinglunanniu.png", "2D2D2D", 2, 0.8, intX, intY
+    If intX > -1 And intY > -1 Then 
+        TracePrint "找到发送按钮,提交"
+        Tap intX, intY
+        Delay delaytime
+    End If
+		   
+End Function
+
+Function MakeStr (L)
+    Dim i
+    randomstr = ""
+    For i = 0 To L
+        Randomize
+       randomstr = randomstr & Mid(StrA, Int(Rnd() * Len(StrA)) + 1, 1)
+    Next
+    MakeStr = randomstr
+End Function
+
+Function randomword(word)
+
+	Dim  array1, lens, MyValue
+	array1 = Split(word, "|")
+	lens = UBOUND(array1) 
+	MyValue = GetRandomMath(0, lens)
+	
+	randomword = array1(MyValue)
+End Function
+
+Function GetRandomMath(m, n)
+  Randomize
+  GetRandomMath = Int(((n-m+1) * Rnd()) + m)
+End Function
+
+Function debug()
+	huifupinglun
+
+End Function
+
+debug()
